@@ -127,8 +127,8 @@ input_data = pd.DataFrame({
     "Timezone_US/Pacific": [timezone_pacific]
 })
 
-data = pd.read_csv('App/datasets/train_data.csv')
-model_data = pd.concat([data, input_data], axis=1)
+data = pd.read_csv('.App/datasets/train_data.csv')
+model_data = pd.concat([data, input_data], ignore_index=True)
 numeric_cols = data.select_dtypes(include=['number']).columns.tolist()
 
 scaler = MinMaxScaler()
@@ -141,7 +141,7 @@ if st.button("Submit"):
         # Make a prediction
         prediction = model.predict(model_data)[-1]
         prediction = 1 if prediction > 0.5 else 0
-        print(prediction)
+        # print(prediction)
         if prediction == 0:
             prediction_text = "Low Severity Accident"
         elif prediction == 1:
