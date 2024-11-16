@@ -4,16 +4,29 @@ import pandas as pd
 import joblib
 from sklearn.preprocessing import MinMaxScaler
 
+st.set_page_config(layout='wide')
+
 # Load the pre-trained model
 model_path = "App/models/classifier.joblib"
 model = joblib.load(model_path)
 
 # Define the Streamlit app
-st.title("Accident Prediction App")
+with st.container():
+    st.markdown("""
+        <style>
+            .title {
+                text-align: center;
+            }
+        </style>
+        <h1 class="title">Accident Prediction App</h1>
+    """, unsafe_allow_html=True)
+
+st.header('Overview')
+
 cont = st.container(border=True)
 cont.write("""
-This app predicts whether an accident is likely to occur based on the input data.  
-Fill in the parameters below and click **Submit** to get a prediction.
+- This app predicts the **Severity** of an accident based on the input data.  
+- Fill in the parameters below and click **Submit** to get a prediction.
 """)
 
 container_style = """
@@ -36,7 +49,7 @@ cont1 = st.container(border=True)
 cont1.subheader('Location Characteristics')
 c1, c2 = cont1.columns(2)
 with c1:
-    start_lat = st.number_input("Start Latitude", format="%.6f", help="Enter the starting latitude (e.g., 37.7749)")
+    start_lat = st.number_input("Start Latitude", format="%.2f", help="Enter the starting latitude (e.g., 37.7749)")
     wind_speed_bc = st.number_input("Wind Speed (m/s)", min_value=0.0, help="Enter the wind speed in meters per second")
 with c2:
     amenity = st.checkbox("Amenity Nearby", help="Check if an amenity is nearby")
@@ -46,25 +59,19 @@ with c2:
     stop = st.checkbox("Stop Nearby", help="Check if there is a stop nearby")
     traffic_signal = st.checkbox("Traffic Signal Nearby", help="Check if there is a traffic signal nearby")
 
-# Time Attributes
-# d = st.date_input("Accident Start Date", value=None)
-# t = st.time_input("Accident start time", value=None)
-
-
-# date = datetime.datetime(d)
-# weekday_number = date.weekday()
-# print(weekday_number)
-
+#Time Attributes
 
 cont2 = st.container(border=True)
 cont2.subheader('Time Attributes')
 c1, c2 = cont2.columns(2)
 with c1:
-    weekday = st.slider("Weekday (0=Monday, 6=Sunday)", 0, 6, help="Select the day of the week")
-    hour = st.slider("Hour of Day (0-23)", 0, 23, help="Select the hour of the day")
-    minute = st.slider("Minute of year", 0, 2000, help="Select the minute of the year")
+    d = st.date_input("Accident Start Date")
+    t = st.time_input("Accident start time")
+
 with c2:
     timezone_pacific = st.checkbox("US/Pacific Timezone", help="Check if the timezone is US/Pacific")
+    astronomical_twilight_night  = st.checkbox("Astronomical Twilight Night", help="Check if the timezone is US/Pacific")
+
 
 # Road type checkboxes
 cont3 = st.container(border=True)
@@ -85,6 +92,13 @@ with c3:
     fwy = st.checkbox("Freeway (Fwy)")
     interstate = st.checkbox("Interstate (I-)")
 
+weekday_number = d.weekday()
+hour = t.hour
+minute = t.minute
+
+total_minute = hour * 60 + minute
+
+
 # Organize inputs into a DataFrame
 input_data = pd.DataFrame({
     "Start_Lat": [start_lat],
@@ -94,9 +108,9 @@ input_data = pd.DataFrame({
     "Station": [station],
     "Stop": [stop],
     "Traffic_Signal": [traffic_signal],
-    "Weekday": [weekday],
+    "Weekday": [weekday_number],
     "Hour": [hour],
-    "Minute": [minute],
+    "Minute": [total_minute],
     "Rd": [rd],
     "St": [st_],
     "Dr": [dr],
@@ -109,6 +123,7 @@ input_data = pd.DataFrame({
     "Fwy": [fwy],
     "I-": [interstate],
     "Wind_Speed_bc": [wind_speed_bc],
+    "Astronomical_Twilight_Night": [astronomical_twilight_night],
     "Timezone_US/Pacific": [timezone_pacific]
 })
 
@@ -117,16 +132,23 @@ model_data = pd.concat([data, input_data], axis=1)
 numeric_cols = data.select_dtypes(include=['number']).columns.tolist()
 
 scaler = MinMaxScaler()
-scaled = scaler.fit_transform(data[numeric_cols])
-data[numeric_cols] = scaled
+scaled = scaler.fit_transform(model_data[numeric_cols])
+model_data[numeric_cols] = scaled
 
 # Submit button
 if st.button("Submit"):
     try:
         # Make a prediction
-        prediction = model.predict(data)[0]
-        prediction_text = "Low Severity Accident" if prediction == 0 else "Very severe accident"
-        st.success(f"Prediction: **{prediction_text}**")
+        prediction = model.predict(model_data)[-1]
+        prediction = 1 if prediction > 0.5 else 0
+        print(prediction)
+        if prediction == 0:
+            prediction_text = "Low Severity Accident"
+        elif prediction == 1:
+            prediction_text = "Very Severe Accident"
+        else:
+            prediction_text = "Unknown Prediction"
+        st.success(f"Prediction: {prediction}    **{prediction_text}**")
     except Exception as e:
         st.error(f"An error occurred while making the prediction: {e}")
 
