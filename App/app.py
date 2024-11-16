@@ -5,7 +5,7 @@ import joblib
 from sklearn.preprocessing import MinMaxScaler
 
 # Load the pre-trained model
-model_path = "./models/classifier.joblib"
+model_path = "App/models/classifier.joblib"
 model = joblib.load(model_path)
 
 # Define the Streamlit app
@@ -112,7 +112,7 @@ input_data = pd.DataFrame({
     "Timezone_US/Pacific": [timezone_pacific]
 })
 
-data = pd.read_csv('./datasets/train_data.csv')
+data = pd.read_csv('App/datasets/train_data.csv')
 model_data = pd.concat([data, input_data], axis=1)
 numeric_cols = data.select_dtypes(include=['number']).columns.tolist()
 
