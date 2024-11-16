@@ -127,7 +127,7 @@ input_data = pd.DataFrame({
     "Timezone_US/Pacific": [timezone_pacific]
 })
 
-data = pd.read_csv('.App/datasets/train_data.csv')
+data = pd.read_csv('App/datasets/train_data.csv')
 model_data = pd.concat([data, input_data], ignore_index=True)
 numeric_cols = data.select_dtypes(include=['number']).columns.tolist()
 
