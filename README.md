@@ -1,18 +1,4 @@
-# DataScience
-
-![Random Forest](https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Random_forest_diagram_complete.png/500px-Random_forest_diagram_complete.png)
-
-## Table of Contents
-1. [Introduction](#introduction)
-2. [Project Overview](#project-overview)
-3. [Installation](#installation)
-4. [Usage](#usage)
-5. [Data Cleaning](#data-cleaning)
-6. [Data Scaling](#data-scaling)
-7. [Data Imputation](#data-imputation)
-8. [One-Hot Encoding](#one-hot-encoding)
-9. [Random Forest Classifier](#random-forest-classifier)
-10. [Conclusion](#conclusion)
+# Accident prediction 
 
 ## 1. Introduction
 This project aims to predict the severity of accidents based on various input features. We use the Random Forest classifier, an ensemble learning technique, to achieve accurate accident severity predictions. The process involves data cleaning, scaling, imputation, and one-hot encoding before training the Random Forest model.
@@ -60,8 +46,8 @@ In cases where there are missing values in the dataset, we use Simple Imputer to
 ## 8. One-Hot Encoding
 Since the Random Forest algorithm requires numerical inputs, we use One-Hot Encoding to convert categorical features into binary vectors, ensuring the algorithm can effectively use them during classification.
 
-## 9. Random Forest Classifier
-The heart of the project lies in the Random Forest classifier. We train the model on the preprocessed data and tune its hyperparameters if necessary to achieve the best accuracy.
+## 9. LightGBM
+The heart of the project lies in the LightGBM classifier. We train the model on the preprocessed data and tune its hyperparameters if necessary to achieve the best accuracy.
 
-## 10. Conclusion
-By following this README, you now have a better understanding of the Random Forest Accident Severity Prediction project. The process of data cleaning, scaling, imputation, and one-hot encoding is essential to prepare the dataset for the Random Forest classifier. Through this approach, you can predict accident severity with improved accuracy and contribute to enhancing safety measures on the roads.
+## 10. Demo App
+[Accident Severity](https://severity-accident-prediction.streamlit.app/)
