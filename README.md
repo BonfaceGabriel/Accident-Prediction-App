@@ -1,16 +1,16 @@
 # Accident prediction 
 
 ## 1. Introduction
-This project aims to predict the severity of accidents based on various input features. We use the Random Forest classifier, an ensemble learning technique, to achieve accurate accident severity predictions. The process involves data cleaning, scaling, imputation, and one-hot encoding before training the Random Forest model.
+This project aims to predict the severity of accidents based on various input features. We use the LightBBM classifier, an ensemble learning technique, to achieve accurate accident severity predictions. 
 
 ## 2. Project Overview
-The main objective of the project is to predict the severity of accidents using the Random Forest algorithm. The workflow includes the following steps:
+The main objective of the project is to predict the severity of accidents using the LightGBM classifier. The workflow includes the following steps:
 
 1. Data Cleaning: Removing or correcting any missing or erroneous data points from the dataset.
 2. Data Scaling: Scaling the numeric features using Min-Max Scaler to bring them within a specific range (e.g., [0, 1]).
 3. Data Imputation: Handling missing values in the dataset using Simple Imputer to ensure all features have valid values.
 4. Categorical Columns One-Hot Encoding: Converting categorical features into numerical form for the Random Forest classifier.
-5. Random Forest Classifier: Training the Random Forest model on the preprocessed data and using it to predict accident severity.
+5. Random Forest Classifier: Training the LightGBM model on the preprocessed data and using it to predict accident severity.
 
 ## 3. Installation
 To run the project, you need the following dependencies:
